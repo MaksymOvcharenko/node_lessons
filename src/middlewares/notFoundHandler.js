@@ -5,5 +5,4 @@ export const notFoundHandler = (err, req, res, next) => {
     message: 'Route not Found',
     error: err.message,
   });
-  // next(createHttpError(404, 'Resource not found'));
 };
