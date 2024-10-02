@@ -16,24 +16,16 @@ import {
 import { isValidId } from '../validation/isValid.js';
 const router = Router();
 
-router.get('/students', ctrlWrapper(getStudentsController));
-router.get(
-  '/students/:studentId',
-  isValidId,
-  ctrlWrapper(getStudentsByIdController),
-);
+router.get('/', ctrlWrapper(getStudentsController));
+router.get('/:studentId', isValidId, ctrlWrapper(getStudentsByIdController));
 router.post(
-  '/students',
+  '/',
   validateBody(createStudentSchema),
   ctrlWrapper(createStudentController),
 );
-router.delete(
-  '/students/:studentId',
-  isValidId,
-  ctrlWrapper(deleteStudentController),
-);
+router.delete('/:studentId', isValidId, ctrlWrapper(deleteStudentController));
 router.put(
-  '/students/:studentId',
+  '/:studentId',
   isValidId,
   validateBody(updateStudentSchema),
   ctrlWrapper(upsertStudentController),
