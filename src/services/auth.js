@@ -87,7 +87,7 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
 };
 
 export const requestResetToken = async (email) => {
-  const user = UsersCollection.findOne({ email });
+  const user = await UsersCollection.findOne({ email });
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
@@ -119,5 +119,26 @@ export const requestResetToken = async (email) => {
     to: email,
     subject: 'Reset your password',
     html,
+  });
+};
+
+export const resetPassword = async (payload) => {
+  let entries;
+  try {
+    entries = jwt.verify(payload.token, env('JWT_SECRET'));
+  } catch (err) {
+    if (err instanceof Error) throw createHttpError(401, err.message);
+    throw err;
+  }
+  const user = await UsersCollection.findOne({
+    _id: entries.sub,
+    email: entries.email,
+  });
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+  await UsersCollection.findByIdAndUpdate(user._id, {
+    password: encryptedPassword,
   });
 };
