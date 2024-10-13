@@ -109,8 +109,11 @@ export const getStudentById = async (studentId) => {
 //   onDuty: true,
 // };
 
-export const createStudents = async (payload) => {
-  const student = await StudentsCollection.create(payload);
+export const createStudents = async (payload, photoUrl) => {
+  const student = await StudentsCollection.create({
+    ...payload,
+    photo: photoUrl,
+  });
   return student;
 };
 export const deleteStudent = async (studentId) => {

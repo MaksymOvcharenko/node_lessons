@@ -9,6 +9,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import router from './routers/index.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 // import { getAllStudents, getStudentById } from './services/students.js';
 const PORT = Number(env('PORT', '3000'));
 export const startServer = () => {
@@ -34,6 +35,7 @@ export const startServer = () => {
       message: 'Hello world!',
     });
   });
+  app.use('/uploads', express.static(UPLOAD_DIR));
   app.use(router);
   app.use('*', notFoundHandler); // і ця функція не спрацьовую помилка, постман видає помилку 404 але не дає текст той що в нотфоунд.
   // app.use('*', errorHandler);
